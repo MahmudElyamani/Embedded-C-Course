@@ -44,6 +44,61 @@ have to make sure it works from the specs.
 connection to the IDE, you should only go back and watch this part if you're working in an automotive company, and are seeking
 some information on how to get started.
  
-(47:21 -> )Talks about @Renesas E1/E2 Debugger, starting from its GDB_servers, how to connect it to CPU and MCU, how to start if
+(47:21 -> 1:01:50)Talks about @Renesas E1/E2 Debugger, starting from its GDB_servers, how to connect it to CPU and MCU, how to start if
 you're in a company and have to start working on it, self checking program to make sure the debgger hardware works, the software
 you'll use afterwards to debug (IDE)
+
+
+What is static memory allocation?:
+• when you identify a local variable, say: int x[3]; the compiler tells the stack to allocate memory for that variable.
+• when you identify the same variable but globally, the compiler will preserve space for it in either .data or .bss .
+• Allocation in memory is calculated during compile time and is fixed because the size of .data section cannot change at runtime.
+• if you do such that: int x[1024]; you're basically allocating 4-Kb in flash and in ram making a total of 8-Kb, this memory is already burnt
+and cannot be changed later on, This type of memory is called Static memory allocation.
+
+
+
+What is Dynamic memory allocation?:
+• By storing data in the heap we can make it seen by the entire code without having to store it in .bss or .data.
+• Heap is a place that allows us to store and delete data during runtime.
+• The ram structure now goes as follows (from bottom to top): .data -> .bss -> heap -> stack -> stack top.
+• To access memory stored by the heap you must only use pointers.
+• Memory allocation is not a standard C function, you need to include @stdlib.h library in order to allocate memory dynamically
+  using functions such as: malloc(), calloc(), free(), realloc(). 
+* when you allocate memory the bytes in that memory are not sequential, meaning they don't follow each other byte by byte. That's why
+we combine allocating memory with @linked-lists, which basically attach a 4-byte pointer to every element that points to the element
+next on the line.
+
+
+-HOWEVER!!: we are not going to be using @dynamic-memory-allocation in Embedded_Systems, because it uses a non-standard C library
+that relies on having an OS that it communicate with through its api in order topreserve memory in its own heap, in real embedded
+systems development there won't be any OS interface as you'll be communicating with a MCU 
+
+-IF you really want to use the standard libc.a libraries in your embedded C code enviroment, you have to track down the point where
+the library itself starts to talk to the OS, for printf() for example, the function goes to call a function called _write(); and it's
+responsible for writing words to the console, for malloc() it goes to a function called _sbark() and it's responsible for telling the
+OS to reserve space in its heap, so we'll have to write from scratch out own libraries to these functions so that they'd work on our
+Microcontroller similarly.
+However for the case of malloc() since you're writing a code to manipulate the heap there is potential that it could overflow to the
+stack and cause issues to the MCU which is very dangerous.
+Therefore MISRA made a rule universal to all embedded programmers that prohibited the use of any malloc() functions that could manipulate
+the heap, which is why it's not recommended for use.
+
+-You might think writing your own library from scratch as opposed to writing definitions for these functions would be easier and you'd
+be correct! but it's just a simple flex to let people know you understand these stuff.
+
+Syntax of malloc():+
+• ptr = (cast-type*)malloc(byte-size);
+• ptr = (int*)malloc(100*sizeof(int));
+
+Syntax of calloc():
+• ptr = (cast-type*)calloc(n, element-size);
+• ptr = (float*)calloc(25, sizeof(float));
+
+Syntax of free():
+• free(ptr);
+
+Syntax of realloc():
+• ptr = realloc(ptr,newsize);
+
+
