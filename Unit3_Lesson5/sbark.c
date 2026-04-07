@@ -9,7 +9,7 @@ void* _sbark(int incr)
     //Placeholder for the previous address of memory in heap
     unsigned char* prev_heap_ptr = NULL;      
 
-    extern unsigned int* _E_bss;        //symbol
+    extern unsigned int* _E_bss;        
 
     //First time initialization
     if (heap_ptr == NULL)          
@@ -21,7 +21,9 @@ void* _sbark(int incr)
     if (heap_ptr + incr > ((unsigned char*)&_E_bss + heap_width ))      
     return (void*)NULL;
 
-    heap_ptr += incr;       //Booking a size equals to: incr
+    //Booking a size equals to: incr
+    heap_ptr += incr;       
 
     return (void*)prev_heap_ptr;
 }
+
