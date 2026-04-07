@@ -1,0 +1,49 @@
+-This lesson discusses different kinds of debuggers from all kinds, you won't need them at this point or for a long
+time at least, but this lesson will be a refernce for the future in case you come across one.
+
+Debug hardware adaptors such as Lauterbach, ST-link, Keil ULINK are connected to the MCU using either JTAG or SWD
+connection.
+Once you get the debugger you must make sure to download its driver in order to communicate properly with it.
+
+
+In order to start debugging you must have a GDB_server, that server communicates with the driver in order to send
+processor signals and memory through the JTAG or SWD adaptors.
+
+
+
+What is a GDB_server?:
+it's a software that runs on the host machine -such as your own PC- to act as a GDB_server.
+There's lots of GDB_servers, some commercial and some non-commercial.
+The most popular open-source GDB_server is called OpenOCD, it doesn't support all architectures or all targets.
+
+
+The GDB for Lauterbach is called trace32, it's an IDE that has its own GDB_server that we cannot communicate with
+by means other than trace32 IDE.
+
+
+Once the GDB_server is up, we attach it with the GDB client or telnet client in order to give the GDB orders.
+The GDB client can be used either directilly through terminal(gitBASH or cmd prompt) or through an IDE like Eclipse.
+
+
+Some companies put the Debug hardware adaptors on the MCU itself or the kit housing it, they do this simply to increase
+their sales so that more people are not inclined to buy some sort of one purpose fit all debugger
+
+
+
+How to pick the right debugger for you:
+1. In order to select the proper debugger hardware you have to look at the processor name within
+    the SOC inside your kit, meaning (Cortex-M4, Renesas-RX110, etc..).
+2. Look at the interface, meaning JTAG or SWD and if it's compatible with your MCU interface or not
+3. Look at the driver, whether it's available for free on the internet or not easily obtainible.
+4. Look at the GDB_server if it's widely available or not.
+- some debuggers like J-Link can code X type renesas CPU but can't program H type. That's why we
+have to make sure it works from the specs.
+
+
+(22:30 -> 47:20)The lesson then talks about how to start debugging using @Lauterbach and @trace32 IDE, starting from how to wire it to its
+connection to the IDE, you should only go back and watch this part if you're working in an automotive company, and are seeking
+some information on how to get started.
+ 
+(47:21 -> )Talks about @Renesas E1/E2 Debugger, starting from its GDB_servers, how to connect it to CPU and MCU, how to start if
+you're in a company and have to start working on it, self checking program to make sure the debgger hardware works, the software
+you'll use afterwards to debug (IDE)
